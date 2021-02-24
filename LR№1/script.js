@@ -8,7 +8,7 @@ console.log("Hello, World!");
 
 // Задание № 2
 
-let matrix = randomMatrix(3, 3, 1, 5);
+let matrix = randomMatrix(3, 3, 1, 10);
 console.log(matrix);
 
 function randomMatrix(m = 50, n = 50, minLim = -250, maxLim = 1005) {
@@ -28,16 +28,15 @@ function randomMatrix(m = 50, n = 50, minLim = -250, maxLim = 1005) {
 }
 
 // Задание № 3
+matrixProcess(matrix, "Сортировка выбором", selectSort);       // Вызов сортировки выбором
 
-matrixProcess(matrix, "Сортировка вставками", selectSort);     // Вызов сортировки вставками
-
-matrixProcess(matrix, "Сортировка выбором", insertSort);       // Вызов сортировки выбором
+matrixProcess(matrix, "Сортировка вставками", insertSort);     // Вызов сортировки вставками
 
 matrixProcess(matrix, "Сортировка обменом", swapSort);         // Вызов сортировки обменом
 
 matrixProcess(matrix, "Сортировка Шелла", ShellSort);          // Вызов сортировки Шелла
 
-matrixProcess(matrix, "Быстрая сортировка", quickSort);  /* Не работает */      // Вызов быстрой сортировки
+matrixProcess(matrix, "Быстрая сортировка", quickSort);        // Вызов быстрой сортировки
 
 matrixProcess(matrix, "Пирамидальная сортировка", HeapSort);   // Вызов пирамидальной сортировки
 
@@ -45,40 +44,45 @@ matrixProcess(matrix, "Встроенная сортировка", includeSort);
 
 
 
-/* Сортировка выбором */
+/* Сортировка выбором. Сложность O(n^2) */
 function selectSort(arr) {
-    for (let i = 0, l = arr.length, k = l - 1; i < k; i++) {
-        let indexMin = i;
-        for (let j = i + 1; j < l; j++) {
-            if (arr[indexMin] > arr[j]) {
-                indexMin = j;
+    for (let i = 0; i < arr.length - 1; i++) {
+        let MinElemIndex = i;
+
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[MinElemIndex] > arr[j]) {
+                MinElemIndex = j;
             }
         }
-        if (indexMin !== i) {
-            [arr[i], arr[indexMin]] = [arr[indexMin], arr[i]];
+
+        if (MinElemIndex !== i) {
+            [arr[i], arr[MinElemIndex]] = [arr[MinElemIndex], arr[i]];
         }
     }
     return arr;
 };
 
-/* Сортировка вставками */
+/* Сортировка вставками. Сложность O(n^2) */
 function insertSort(arr) {
-    for (let i = 1, l = arr.length; i < l; i++) {
+    for (let i = 1; i < arr.length; i++) {
         const current = arr[i];
         let j = i;
+
         while (j > 0 && arr[j - 1] > current) {
             arr[j] = arr[j - 1];
             j--;
         }
+
         arr[j] = current;
     }
+
     return arr;
 };
 
-/* Сортировка обменом */
+/* Сортировка обменом. Сложность O(n^2) */
 function swapSort(arr) {
-    for (let i = 0, endI = arr.length - 1; i < endI; i++) {
-        for (let j = 0, endJ = endI - i; j < endJ; j++) {
+    for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - 1 - i; j++) {
             if (arr[j] > arr[j + 1]) {
                 let swap = arr[j];
                 arr[j] = arr[j + 1];
@@ -86,46 +90,52 @@ function swapSort(arr) {
             }
         }
     }
+
     return arr;
 }
 
-/* Сортировка Шелла */
+/* Сортировка Шелла. Сложность O(n) */
 function ShellSort(arr) {
-    const l = arr.length;
-    let gap = Math.floor(l / 2);
+    let gap = Math.floor(arr.length / 2);
+
     while (gap >= 1) {
-        for (let i = gap; i < l; i++) {
+        for (let i = gap; i < arr.length; i++) {
             const current = arr[i];
             let j = i;
+
             while (j > 0 && arr[j - gap] > current) {
                 arr[j] = arr[j - gap];
                 j -= gap;
             }
+
             arr[j] = current;
         }
+
         gap = Math.floor(gap / 2);
     }
+
     return arr;
 };
 
 /* Быстрая сортировка */
-function quickSort(array) {
-    if (array.length <= 1) {
-      return array;
-    }
-  
-    var pivot = array[0];
+function quickSort(arr) {
+    if (arr.length < 2) return arr;
     
-    var left = []; 
-    var right = [];
-  
-    for (var i = 1; i < array.length; i++) {
-      array[i] < pivot ? left.push(array[i]) : right.push(array[i]);
+    let less = [],
+        more = [],
+        pivot = arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+            less.push(arr[i])
+        } else {
+            more.push(arr[i]);
+        };
     }
-  
-    return quickSort(left).concat(pivot, quickSort(right));
-};
-  
+
+    return quickSort(less).concat(pivot, quickSort(more));
+}
+
 /* Пирамидальная сортировка */
 function HeapSort(arr) {
     let n = arr.length, i = Math.floor(n / 2), j, k, t;
@@ -155,18 +165,20 @@ function HeapSort(arr) {
 
 /* Встроенная сортировка */
 function includeSort(arr) {
-    arr.sort((a, b) => a - b);
+   return arr.sort((a, b) => a - b);
 }
 
 /* Обработка матрицы */
 function matrixProcess(originalArr, name, func) {
     let matrix = JSON.parse(JSON.stringify(originalArr)); // Создание копии массива
 
-    const startPoint = new Date().getTime();              // Время старта сортировки
-    matrix.forEach(row => func(row));                     // Сортировка каждой строки матрицы
-    const endPoint = new Date().getTime();                // Время конца сортировки
+    console.time(name);                                   // Время старта сортировки
+    for (let row = 0; row < matrix.length; row++) {           // Сортировка каждой строки матрицы
+        matrix[row] = func(matrix[row]); 
+    }                     
+    console.timeEnd(name);                                // Время конца сортировки
 
     console.log(matrix);
-
-    console.log(`${name}. Время работы: ${endPoint - startPoint}ms`); // Вывод названия сортировки и время работы 
 }
+
+
