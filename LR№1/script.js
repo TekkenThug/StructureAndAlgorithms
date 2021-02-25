@@ -8,7 +8,17 @@ console.log("Hello, World!");
 
 // Задание № 2
 
-let matrix = randomMatrix(3, 3, 1, 10);
+/* Написать генератор случайных матриц(многомерных),
+который принимает опциональные параметры ​m, n, min_limit, max_limit, где ​m и ​n указывают
+размер матрицы, а ​min_lim ​и max_lim - минимальное и максимальное значение для генерируемого числа. 
+По умолчанию при отсутствии параметров принимать следующие значения: 
+m = 50
+n = 50
+min_limit = -250
+max_limit = 1000 + (номер своего варианта) 
+*/
+
+let matrix = randomMatrix();
 console.log(matrix);
 
 function randomMatrix(m = 50, n = 50, minLim = -250, maxLim = 1005) {
@@ -28,6 +38,12 @@ function randomMatrix(m = 50, n = 50, minLim = -250, maxLim = 1005) {
 }
 
 // Задание № 3
+
+/* Реализовать методы сортировки строк числовой матрицы в соответствии с заданием.
+Оценить время работы каждого алгоритма сортировки и сравнить его со временем стандартной функции сортировки. 
+Испытания проводить на сгенерированных матрицах
+*/
+
 matrixProcess(matrix, "Сортировка выбором", selectSort);       // Вызов сортировки выбором
 
 matrixProcess(matrix, "Сортировка вставками", insertSort);     // Вызов сортировки вставками
@@ -41,7 +57,6 @@ matrixProcess(matrix, "Быстрая сортировка", quickSort);        
 matrixProcess(matrix, "Пирамидальная сортировка", HeapSort);   // Вызов пирамидальной сортировки
 
 matrixProcess(matrix, "Встроенная сортировка", includeSort);   // Вызов встроенной сортировки
-
 
 
 /* Сортировка выбором. Сложность O(n^2) */
@@ -138,7 +153,10 @@ function quickSort(arr) {
 
 /* Пирамидальная сортировка */
 function HeapSort(arr) {
-    let n = arr.length, i = Math.floor(n / 2), j, k, t;
+    let n = arr.length,
+        i = Math.floor(n / 2),
+        j, k, t;
+
     while (true) {
         if (i > 0) t = arr[--i];
         else {
@@ -148,8 +166,10 @@ function HeapSort(arr) {
             t = arr[n];
             arr[n] = arr[0];
         }
+
         j = i;
         k = j * 2 + 1;
+
         while (k < n) {
             if (k + 1 < n && arr[k + 1] > arr[k]) k++;
             if (arr[k] > t) {
@@ -159,6 +179,7 @@ function HeapSort(arr) {
             }
             else break;
         }
+
         arr[j] = t;
     }
 }
@@ -170,15 +191,16 @@ function includeSort(arr) {
 
 /* Обработка матрицы */
 function matrixProcess(originalArr, name, func) {
-    let matrix = JSON.parse(JSON.stringify(originalArr)); // Создание копии массива
+    let matrix = JSON.parse(JSON.stringify(originalArr));  // Создание копии массива
 
-    console.time(name);                                   // Время старта сортировки
-    for (let row = 0; row < matrix.length; row++) {           // Сортировка каждой строки матрицы
+    console.time(name);                                    // Время старта сортировки
+
+    for (let row = 0; row < matrix.length; row++) {        // Сортировка каждой строки матрицы
         matrix[row] = func(matrix[row]); 
-    }                     
-    console.timeEnd(name);                                // Время конца сортировки
+    }
 
-    console.log(matrix);
+    console.timeEnd(name);                                 // Время конца сортировки
+    // console.log(matrix);
 }
 
 
