@@ -109,7 +109,7 @@ function swapSort(arr) {
     return arr;
 }
 
-/* Сортировка Шелла. Сложность O(n) */
+/* Сортировка Шелла. Сложность O(n^2) */
 function ShellSort(arr) {
     let gap = Math.floor(arr.length / 2);
 
