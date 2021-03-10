@@ -56,7 +56,10 @@ matrixProcess(matrix, "Быстрая сортировка", quickSort);        
 
 matrixProcess(matrix, "Пирамидальная сортировка", HeapSort);   // Вызов пирамидальной сортировки
 
+matrixProcess(matrix, "Турнирная сортировка сортировка", TournamentSort);   // Вызов турнирной сортировки
+
 matrixProcess(matrix, "Встроенная сортировка", includeSort);   // Вызов встроенной сортировки
+
 
 
 /* Сортировка выбором. Сложность O(n^2) */
@@ -181,6 +184,46 @@ function HeapSort(arr) {
         }
 
         arr[j] = t;
+    }
+}
+
+/* Турнирная сортировка */
+function TournamentSort(arr) {
+    let three = Array(2 * (arr.length + arr.length % 2));
+    let index = three.length - arr.length + arr.length % 2;
+
+    for (let i = index; i < three.length; i++) {
+        tree[i] = i - index, array[i - index];
+    }
+
+    for (let j = 0; j < arr.length; j++) {
+        let n = arr.length;
+        index = three.length - arr.length  + arr.length % 2;
+
+        while (index > -1) {
+            n = (n + 1) / 2;
+
+            for (let i = 0; i < n; i++) {
+                let iCopy = Math.max(index + i * 2, 1);
+
+                if (three[iCopy] != null && three[iCopy + 1] != null) {
+                    if (three[iCopy][1] < three[iCopy + 1][1]) {
+                        three[iCopy / 2] = three[iCopy];
+                    } else {
+                        three[iCopy / 2] = three[iCopy + 1]
+                    }
+                } else {
+                    three[iCopy / 2] = (three[iCopy] != null) ? three[iCopy] : three[iCopy + 1];
+                }
+            }
+
+            index -= n;
+        }
+
+        index = three[0][0]
+        let x = three[0][1]
+        arr[j] = x;
+        three[three.length - arr.length - arr.length % 2 + index] = null;
     }
 }
 
