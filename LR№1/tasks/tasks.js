@@ -11,33 +11,79 @@ let arr4 = [3, 6, 2, 3];
 maxPerimeter(arr1, arr2, arr3, arr4);
 
 function maxPerimeter(...arr) {
-    arr.forEach(arrItem => {
-        arrItem.sort((a, b) => b - a);
+  arr.forEach((arrItem) => {
+    arrItem.sort((a, b) => b - a);
 
-        let max = 0;
-    
-        for (let i = 0; i < arrItem.length - 2; i++) {
-            if (arrItem[i] < arrItem[i + 1] + arrItem[i + 2]) {
-                max = Math.max(max, arrItem[i] + arrItem[i + 1] + arrItem[i + 2]);
-                break;
-            }
-        }
-    
-        if (max) {
-            console.log(`Максимальный периметр: ${max}`);
-        } else {
-            console.log(`Треугольника нет`);
-        }
-    })
-    
+    let max = 0;
+
+    for (let i = 0; i < arrItem.length - 2; i++) {
+      if (arrItem[i] < arrItem[i + 1] + arrItem[i + 2]) {
+        max = Math.max(max, arrItem[i] + arrItem[i + 1] + arrItem[i + 2]);
+        break;
+      }
+    }
+
+    if (max) {
+      console.log(`Максимальный периметр: ${max}`);
+    } else {
+      console.log(`Треугольника нет`);
+    }
+  });
 }
 
 // Задание № 2
 /* */
-let numbers = [3,30,34,5,9];
+let numbers = [3, 30, 34, 5, 9];
 maxNumberStr(numbers);
 
 function maxNumberStr(arr) {
-    arr.sort();
-    console.log(arr);
+  arr.sort();
+  console.log(arr);
+}
+
+// Задание № 3
+/* Дана матрица mat размером m * n, значения ­ целочисленные.
+Напишите функцию, сортирующую каждую диагональ матрицы по возрастанию
+и возвращающую получившуюся матрицу. */
+let mat1 = [
+  [3, 3, 1, 1],
+  [2, 2, 1, 2],
+  [1, 1, 1, 2],
+];
+let mat2 = [
+  [11, 25, 66, 1, 69, 7],
+  [23, 55, 17, 45, 15, 52],
+  [75, 31, 36, 44, 58, 8],
+  [22, 27, 33, 25, 68, 4],
+  [84, 28, 14, 11, 5, 50],
+];
+
+sortDiagonals(mat1);
+sortDiagonals(mat2);
+
+function sortDiagonals(arr) {
+  const m = arr.length;
+  const n = arr[0].length;
+
+  let c = 1;
+
+  while (c !== m) {
+    sorting(m, n);
+    c++;
+  }
+
+  console.log(arr)
+
+  function sorting(m, n) {
+    for (let i = 0; i < m; i++) {
+      let a = (b = i);
+      for (let j = 0; j < n; j++) {
+        if (i + 1 < m && j + 1 < n && arr[i + 1][j + 1] < arr[i][j]) {
+          let swap = arr[i + 1][j + 1];
+          arr[i + 1][j + 1] = arr[i][j];
+          arr[i][j] = swap;
+        }
+      }
+    }
+  }
 }
