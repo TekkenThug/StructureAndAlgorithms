@@ -32,14 +32,18 @@ function maxPerimeter(...arr) {
 }
 
 // Задание № 2
-/* */
+/* Дан массив неотрицательных целых чисел nums.
+Расположите их в таком порядке, чтобы вместе они образовали максимально возможное число.*/
 let numbers = [3, 30, 34, 5, 9];
-maxNumberStr(numbers);
+let number2 = [10,  2];
+let number3 = [10];
 
-function maxNumberStr(arr) {
-  arr.sort();
-  console.log(arr);
+const concatMax = (arr) => {
+  let result = arr.map(String).sort((a, b) => (b + a) - (a + b)).join("");
+  return result;
 }
+
+console.log(concatMax(numbers), concatMax(number2), concatMax(number3));
 
 // Задание № 3
 /* Дана матрица mat размером m * n, значения ­ целочисленные.
@@ -72,7 +76,7 @@ function sortDiagonals(arr) {
     c++;
   }
 
-  console.log(arr)
+  console.log(arr);
 
   function sorting(m, n) {
     for (let i = 0; i < m; i++) {
