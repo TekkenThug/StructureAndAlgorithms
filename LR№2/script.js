@@ -14,30 +14,6 @@ function randomData(n = 10, minLim = 0, maxLim = 10) {
   return data;
 }
 
-/* Бинарный поиск */
-function binarySearch(value, list) {
-  let first = 0,
-    last = list.length - 1,
-    position = -1,
-    found = false,
-    middle;
-
-  while (found === false && first <= last) {
-    middle = Math.floor((first + last) / 2);
-
-    if (list[middle] == value) {
-      found = true;
-      position = middle;
-    } else if (list[middle] > value) {
-      last = middle - 1;
-    } else {
-      first = middle + 1;
-    }
-  }
-
-  return position;
-}
-
 /* Бинарное дерево */
 class Node {
   constructor(data) {
@@ -228,59 +204,67 @@ data.forEach((item) => {
   tree.add(item);
 });
 
-// console.log(tree);
+console.log(tree);
+
+/* Бинарный поиск */
+function binarySearch(value, list) {
+  let first = 0,
+    last = list.length - 1,
+    position = -1,
+    found = false,
+    middle;
+
+  while (found === false && first <= last) {
+    middle = Math.floor((first + last) / 2);
+
+    if (list[middle] == value) {
+      found = true;
+      position = middle;
+    } else if (list[middle] > value) {
+      last = middle - 1;
+    } else {
+      first = middle + 1;
+    }
+  }
+
+  return position;
+}
 
 /* Фиббоначиев поиск */
 function fibMonaccianSearch(x, arr) {
   let n = arr.length;
-  /* Initialize fibonacci numbers */
-  let fibMMm2 = 0; // (m-2)'th Fibonacci No.
-  let fibMMm1 = 1; // (m-1)'th Fibonacci No.
-  let fibM = fibMMm2 + fibMMm1; // m'th Fibonacci
+  let fibMMm2 = 0; 
+  let fibMMm1 = 1;
+  let fibM = fibMMm2 + fibMMm1; 
 
-  /* fibM is going to store the smallest Fibonacci
-    Number greater than or equal to n */
   while (fibM < n) {
     fibMMm2 = fibMMm1;
     fibMMm1 = fibM;
     fibM = fibMMm2 + fibMMm1;
   }
 
-  // Marks the eliminated range from front
   let offset = -1;
 
-  /* while there are elements to be inspected. Note that
-    we compare arr[fibMm2] with x. When fibM becomes 1,
-    fibMm2 becomes 0 */
-
   while (fibM > 1) {
-    // Check if fibMm2 is a valid location
     let i = Math.min(offset + fibMMm2, n - 1);
 
-    /* If x is greater than the value at index fibMm2,
-        cut the subarray array from offset to i */
     if (arr[i] < x) {
       fibM = fibMMm1;
       fibMMm1 = fibMMm2;
       fibMMm2 = fibM - fibMMm1;
       offset = i;
     } else if (arr[i] > x) {
-      /* If x is less than the value at index fibMm2,
-        cut the subarray after i+1 */
       fibM = fibMMm2;
       fibMMm1 = fibMMm1 - fibMMm2;
       fibMMm2 = fibM - fibMMm1;
     } else return i;
-
-    /* element found. return index */
   }
 
-  /* comparing the last element with x */
+
   if (fibMMm1 && arr[n - 1] == x) {
     return n - 1;
   }
 
-  /*element not found. return -1 */
   return -1;
 }
 
@@ -312,9 +296,9 @@ function interpolationSearch(key, arr) {
 }
 
 /* Вызов функций поиска */
-// dataProcess(data, 3, binarySearch, "Бинарный поиск");
-// dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
-// dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
+dataProcess(data, 3, binarySearch, "Бинарный поиск");
+dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
+dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
 
 /* Обработка матрицы */
 function dataProcess(originalData, value, func, signature) {
@@ -521,79 +505,79 @@ const OCCUPIED = 1, //метка "поле бьётся"
   FREE = 0, //метка "поле не бьётся"
   ISHERE = -1; //метка "ферзь тут"
 
-// class Queen {
-//   constructor(N) {
-//     this.N = N;
+class Queen {
+  constructor(N) {
+    this.N = N;
 
-//     for (let i = 0; i < 2 * this.N - 1; i++) {
-//       if (i < this.N) this.columns[i] = ISHERE;
+    for (let i = 0; i < 2 * this.N - 1; i++) {
+      if (i < this.N) this.columns[i] = ISHERE;
 
-//       this.diagonals1[i] = FREE;
-//       this.diagonals2[i] = FREE;
-//     }
-//   }
+      this.diagonals1[i] = FREE;
+      this.diagonals2[i] = FREE;
+    }
+  }
 
-//   columns = [];
-//   solutions = [];
-//   diagonals1 = [];
-//   diagonals2 = [];
+  columns = [];
+  solutions = [];
+  diagonals1 = [];
+  diagonals2 = [];
 
-//   run(row = 0) {
-//     for (let column = 0; column < this.N; ++column) {
-//       if (this.columns[column] >= 0) {
-//         //текущий столбец бьётся, продолжить
-//         continue;
-//       }
+  run(row = 0) {
+    for (let column = 0; column < this.N; ++column) {
+      if (this.columns[column] >= 0) {
+        //текущий столбец бьётся, продолжить
+        continue;
+      }
 
-//       let thisDiag1 = row + column;
+      let thisDiag1 = row + column;
 
-//       if (this.diagonals1[thisDiag1] == OCCUPIED) {
-//         //диагональ '\' для текущих строки и столбца бьётся, продолжить
-//         continue;
-//       }
-//       let thisDiag2 = this.N - 1 - row + column;
+      if (this.diagonals1[thisDiag1] == OCCUPIED) {
+        //диагональ '\' для текущих строки и столбца бьётся, продолжить
+        continue;
+      }
+      let thisDiag2 = this.N - 1 - row + column;
 
-//       if (this.diagonals2[thisDiag2] == OCCUPIED) {
-//         //диагональ '/' для текущих строки и столбца бьётся, продолжить
-//         continue;
-//       }
+      if (this.diagonals2[thisDiag2] == OCCUPIED) {
+        //диагональ '/' для текущих строки и столбца бьётся, продолжить
+        continue;
+      }
 
-//       this.columns[column] = row;
-//       this.diagonals1[thisDiag1] = OCCUPIED; //занять диагонали, которые теперь бьются
-//       this.diagonals2[thisDiag2] = OCCUPIED;
+      this.columns[column] = row;
+      this.diagonals1[thisDiag1] = OCCUPIED; //занять диагонали, которые теперь бьются
+      this.diagonals2[thisDiag2] = OCCUPIED;
 
-//       if (row == this.N - 1) {
-//         //найдена последняя строка - есть решение
-//         this.solutions.push(this.columns.slice());
-//       } else {
-//         //иначе рекурсия
-//         this.run(row + 1);
-//       }
+      if (row == this.N - 1) {
+        //найдена последняя строка - есть решение
+        this.solutions.push(this.columns.slice());
+      } else {
+        //иначе рекурсия
+        this.run(row + 1);
+      }
 
-//       this.columns[column] = ISHERE;
-//       this.diagonals1[thisDiag1] = FREE;
-//       this.diagonals2[thisDiag2] = FREE;
-//     }
-//   }
-// }
+      this.columns[column] = ISHERE;
+      this.diagonals1[thisDiag1] = FREE;
+      this.diagonals2[thisDiag2] = FREE;
+    }
+  }
+}
 
-// function getLine(solution) {
-//   return solution.reduce((previous, current, currentIndex) => {
-//     return previous + `(${currentIndex + 1},${current + 1})`;
-//   }, "");
-// }
+function getLine(solution) {
+  return solution.reduce((previous, current, currentIndex) => {
+    return previous + `(${currentIndex + 1},${current + 1})`;
+  }, "");
+}
 
-// function queenPositions(N = 8) {
-//   let table = new Queen(N);
+function queenPositions(N = 8) {
+  let table = new Queen(N);
 
-//   console.log(`Размер доски: ${table.N}x${table.N}`);
-//   console.time("Время вычисления");
-//   table.run();
+  console.log(`Размер доски: ${table.N}x${table.N}`);
+  console.time("Время вычисления");
+  table.run();
 
-//   console.timeEnd("Время вычисления");
-//   console.log(`Количество решений: ${table.solutions.length}`);
+  console.timeEnd("Время вычисления");
+  console.log(`Количество решений: ${table.solutions.length}`);
 
-//   table.solutions.forEach((solution) => console.log(getLine(solution)));
-// }
+  table.solutions.forEach((solution) => console.log(getLine(solution)));
+}
 
-// queenPositions();
+queenPositions();
