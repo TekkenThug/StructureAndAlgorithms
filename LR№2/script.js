@@ -312,9 +312,9 @@ function interpolationSearch(key, arr) {
 }
 
 /* Вызов функций поиска */
-dataProcess(data, 3, binarySearch, "Бинарный поиск");
-dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
-dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
+// dataProcess(data, 3, binarySearch, "Бинарный поиск");
+// dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
+// dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
 
 /* Обработка матрицы */
 function dataProcess(originalData, value, func, signature) {
@@ -334,6 +334,184 @@ function dataProcess(originalData, value, func, signature) {
   console.log(data);
 }
 
+// Задание №2
+/* Реализовать методы рехэширования */
+class HashTable {
+  constructor() {
+    this.table = new Array(137);
+    this.values = [];
+  }
+
+  hash(string) {
+    const H = 37;
+    let total = 0;
+
+    for (var i = 0; i < string.length; i++) {
+      total += H * total + string.charCodeAt(i);
+    }
+
+    total %= this.table.length;
+
+    if (total < 1) {
+      this.table.length - 1;
+    }
+
+    return parseInt(total);
+  }
+
+  showTable() {
+    for (const key in this.table) {
+      if (this.table[key] !== undefined) {
+        console.log(key, " : ", this.table[key]);
+      }
+    }
+  }
+
+  put(data) {
+    const pos = this.hash(data);
+    this.table[pos] = data;
+  }
+
+  get(key) {
+    return this.table[this.hash(key)];
+  }
+}
+
+class HashTableChains extends HashTable {
+  constructor() {
+    super();
+    this.buildChains();
+  }
+
+  buildChains() {
+    for (var i = 0; i < this.table.length; i++) {
+      this.table[i] = new Array();
+    }
+  }
+
+  showTable() {
+    for (const key in this.table) {
+      if (this.table[key][0] !== undefined) {
+        console.log(key, " : ", this.table[key]);
+      }
+    }
+  }
+
+  put(key, data) {
+    const pos = this.hash(key);
+    let index = 0;
+    if (this.table[pos][index] === undefined) {
+      this.table[pos][index] = data;
+    } else {
+      ++index;
+      while (this.table[pos][index] !== undefined) {
+        index++;
+      }
+      this.table[pos][index] = data;
+    }
+  }
+
+  get(key) {
+    const pos = this.hash(key);
+    let index = 0;
+    while (this.table[pos][index] != key) {
+      if (this.table[pos][index] !== undefined) {
+        return this.table[pos][index];
+      } else {
+        return undefined;
+      }
+      index++;
+    }
+  }
+}
+
+class HashTableLinearP extends HashTable {
+  constructor() {
+    super();
+    this.values = new Array();
+  }
+
+  put(key, data) {
+    let pos = this.hash(key);
+    if (this.table[pos] === undefined) {
+      this.table[pos] = key;
+      this.values[pos] = data;
+    } else {
+      while (this.table[pos] !== undefined) {
+        pos++;
+      }
+      this.table[pos] = key;
+      this.values[pos] = data;
+    }
+  }
+
+  get(key) {
+    const hash = this.hash(key);
+    if (hash > -1) {
+      for (let i = hash; this.table[i] !== undefined; i++) {
+        if (this.table[i] === key) {
+          return this.values[i];
+        }
+      }
+    }
+    return undefined;
+  }
+
+  remove(key) {
+    const hashCode = this.hash(key);
+    let list = this.table[hashCode];
+
+    if (!list) {
+      return;
+    }
+
+    list = undefined;
+  }
+
+  showTable() {
+    for (const key in this.table) {
+      if (this.table[key] !== undefined) {
+        console.log(key, " : ", this.values[key]);
+      }
+    }
+  }
+}
+
+class HashTableRandom extends HashTableLinearP {
+  constructor() {
+    super();
+  }
+
+  hash(string) {
+    let total  = (string + ((625 * string + 6571) % 31104)) % this.table.length;
+
+    if (total < 1) {
+      this.table.length - 1;
+    }
+
+    return parseInt(total);
+  }
+}
+
+let table = new HashTableLinearP();
+data.forEach((item) => {
+  table.put(Math.random(), item);
+});
+table.showTable();
+
+let tableChains = new HashTableChains();
+data.forEach((item) => {
+  tableChains.put(Math.random(), item);
+});
+tableChains.showTable();
+
+
+let tableRandom = new HashTableRandom();
+data.forEach((item) => {
+  tableRandom.put(Math.random(), item);
+});
+tableRandom.showTable();
+
 // Задание №3
 /* Расставить на стандартной 64-клеточной шахматной доске 8 ферзей так, чтобы ни
 один из них не находился под боем другого». Подразумевается, что ферзь бьёт все клетки,
@@ -343,79 +521,79 @@ const OCCUPIED = 1, //метка "поле бьётся"
   FREE = 0, //метка "поле не бьётся"
   ISHERE = -1; //метка "ферзь тут"
 
-class Queen {
-  constructor(N) {
-    this.N = N;
+// class Queen {
+//   constructor(N) {
+//     this.N = N;
 
-    for (let i = 0; i < 2 * this.N - 1; i++) {
-      if (i < this.N) this.columns[i] = ISHERE;
+//     for (let i = 0; i < 2 * this.N - 1; i++) {
+//       if (i < this.N) this.columns[i] = ISHERE;
 
-      this.diagonals1[i] = FREE;
-      this.diagonals2[i] = FREE;
-    }
-  }
+//       this.diagonals1[i] = FREE;
+//       this.diagonals2[i] = FREE;
+//     }
+//   }
 
-  columns = [];
-  solutions = [];
-  diagonals1 = [];
-  diagonals2 = [];
+//   columns = [];
+//   solutions = [];
+//   diagonals1 = [];
+//   diagonals2 = [];
 
-  run(row = 0) {
-    for (let column = 0; column < this.N; ++column) {
-      if (this.columns[column] >= 0) {
-        //текущий столбец бьётся, продолжить
-        continue;
-      }
+//   run(row = 0) {
+//     for (let column = 0; column < this.N; ++column) {
+//       if (this.columns[column] >= 0) {
+//         //текущий столбец бьётся, продолжить
+//         continue;
+//       }
 
-      let thisDiag1 = row + column;
+//       let thisDiag1 = row + column;
 
-      if (this.diagonals1[thisDiag1] == OCCUPIED) {
-        //диагональ '\' для текущих строки и столбца бьётся, продолжить
-        continue;
-      }
-      let thisDiag2 = this.N - 1 - row + column;
+//       if (this.diagonals1[thisDiag1] == OCCUPIED) {
+//         //диагональ '\' для текущих строки и столбца бьётся, продолжить
+//         continue;
+//       }
+//       let thisDiag2 = this.N - 1 - row + column;
 
-      if (this.diagonals2[thisDiag2] == OCCUPIED) {
-        //диагональ '/' для текущих строки и столбца бьётся, продолжить
-        continue;
-      }
+//       if (this.diagonals2[thisDiag2] == OCCUPIED) {
+//         //диагональ '/' для текущих строки и столбца бьётся, продолжить
+//         continue;
+//       }
 
-      this.columns[column] = row;
-      this.diagonals1[thisDiag1] = OCCUPIED; //занять диагонали, которые теперь бьются
-      this.diagonals2[thisDiag2] = OCCUPIED;
+//       this.columns[column] = row;
+//       this.diagonals1[thisDiag1] = OCCUPIED; //занять диагонали, которые теперь бьются
+//       this.diagonals2[thisDiag2] = OCCUPIED;
 
-      if (row == this.N - 1) {
-        //найдена последняя строка - есть решение
-        this.solutions.push(this.columns.slice());
-      } else {
-        //иначе рекурсия
-        this.run(row + 1);
-      }
+//       if (row == this.N - 1) {
+//         //найдена последняя строка - есть решение
+//         this.solutions.push(this.columns.slice());
+//       } else {
+//         //иначе рекурсия
+//         this.run(row + 1);
+//       }
 
-      this.columns[column] = ISHERE;
-      this.diagonals1[thisDiag1] = FREE;
-      this.diagonals2[thisDiag2] = FREE;
-    }
-  }
-}
+//       this.columns[column] = ISHERE;
+//       this.diagonals1[thisDiag1] = FREE;
+//       this.diagonals2[thisDiag2] = FREE;
+//     }
+//   }
+// }
 
-function getLine(solution) {
-  return solution.reduce((previous, current, currentIndex) => {
-    return previous + `(${currentIndex + 1},${current + 1})`;
-  }, "");
-}
+// function getLine(solution) {
+//   return solution.reduce((previous, current, currentIndex) => {
+//     return previous + `(${currentIndex + 1},${current + 1})`;
+//   }, "");
+// }
 
-function queenPositions(N = 8) {
-  let table = new Queen(N);
+// function queenPositions(N = 8) {
+//   let table = new Queen(N);
 
-  console.log(`Размер доски: ${table.N}x${table.N}`);
-  console.time("Время вычисления");
-  table.run();
+//   console.log(`Размер доски: ${table.N}x${table.N}`);
+//   console.time("Время вычисления");
+//   table.run();
 
-  console.timeEnd("Время вычисления");
-  console.log(`Количество решений: ${table.solutions.length}`);
+//   console.timeEnd("Время вычисления");
+//   console.log(`Количество решений: ${table.solutions.length}`);
 
-  table.solutions.forEach((solution) => console.log(getLine(solution)));
-}
+//   table.solutions.forEach((solution) => console.log(getLine(solution)));
+// }
 
-queenPositions();
+// queenPositions();
