@@ -14,30 +14,6 @@ function randomData(n = 10, minLim = 0, maxLim = 10) {
   return data;
 }
 
-/* Бинарный поиск */
-function binarySearch(value, list) {
-  let first = 0,
-    last = list.length - 1,
-    position = -1,
-    found = false,
-    middle;
-
-  while (found === false && first <= last) {
-    middle = Math.floor((first + last) / 2);
-
-    if (list[middle] == value) {
-      found = true;
-      position = middle;
-    } else if (list[middle] > value) {
-      last = middle - 1;
-    } else {
-      first = middle + 1;
-    }
-  }
-
-  return position;
-}
-
 /* Бинарное дерево */
 class Node {
   constructor(data) {
@@ -82,28 +58,6 @@ class BinaryTree {
     }
   }
   /**
-   * Максимальный узел в дереве
-   * @memberof BinaryTree
-   */
-  getMax() {
-    let current = this.root;
-    while (current.right !== null) {
-      current = current.right;
-    }
-    return current.data;
-  }
-  /**
-   * Минимальный узел в дереве
-   * @memberof BinaryTree
-   */
-  getMin() {
-    let current = this.root;
-    while (current.left !== null) {
-      current = current.left;
-    }
-    return current.data;
-  }
-  /**
    * Количество узлов в дереве
    * @memberof BinaryTree
    */
@@ -123,66 +77,6 @@ class BinaryTree {
       }
     }
     return true;
-  }
-  /**
-   * Прямой обход дерева
-   * @param {any} node
-   * @memberof BinaryTree
-   */
-  preOrder(node) {
-    if (node === null) {
-      return;
-    }
-    console.log(node.data);
-    this.preOrder(node.left);
-    this.preOrder(node.right);
-  }
-  /**
-   * Симметричный обход дерева
-   * @param {any} node
-   * @memberof BinaryTree
-   */
-  inOrder(node) {
-    if (node === null) {
-      return;
-    }
-    this.inOrder(node);
-    console.log(node.data);
-    this.inOrder(node);
-  }
-  /**
-   * Обратный обход дерева
-   * @param {any} node
-   * @memberof BinaryTree
-   */
-  postOrder(node) {
-    if (node === null) {
-      return;
-    }
-    this.inOrder(node);
-    this.inOrder(node);
-    console.log(node.data);
-  }
-  /**
-   * Обход дерева в ширину
-   * @param {any} node
-   * @memberof BinaryTree
-   */
-  bfs(node) {
-    let queue = [];
-    let values = [];
-    queue.push(node);
-    while (queue.length > 0) {
-      let current = queue.shift();
-      values.push(current.data);
-      if (current.left) {
-        queue.push(current.left);
-      }
-      if (current.right) {
-        queue.push(current.right);
-      }
-    }
-    return values;
   }
   remove(data) {
     const removeNode = function (node, data) {
@@ -229,6 +123,30 @@ data.forEach((item) => {
 });
 
 // console.log(tree);
+
+/* Бинарный поиск */
+function binarySearch(value, list) {
+  let first = 0,
+    last = list.length - 1,
+    position = -1,
+    found = false,
+    middle;
+
+  while (found === false && first <= last) {
+    middle = Math.floor((first + last) / 2);
+
+    if (list[middle] == value) {
+      found = true;
+      position = middle;
+    } else if (list[middle] > value) {
+      last = middle - 1;
+    } else {
+      first = middle + 1;
+    }
+  }
+
+  return position;
+}
 
 /* Фиббоначиев поиск */
 function fibMonaccianSearch(x, arr) {
@@ -312,9 +230,9 @@ function interpolationSearch(key, arr) {
 }
 
 /* Вызов функций поиска */
-// dataProcess(data, 3, binarySearch, "Бинарный поиск");
-// dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
-// dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
+dataProcess(data, 3, binarySearch, "Бинарный поиск");
+dataProcess(data, 3, fibMonaccianSearch, "Фиббоначиев поиск");
+dataProcess(data, 3, interpolationSearch, "Интерполяционный поиск");
 
 /* Обработка матрицы */
 function dataProcess(originalData, value, func, signature) {
@@ -499,18 +417,18 @@ data.forEach((item) => {
 });
 table.showTable();
 
-let tableChains = new HashTableChains();
-data.forEach((item) => {
-  tableChains.put(Math.random(), item);
-});
-tableChains.showTable();
+// let tableChains = new HashTableChains();
+// data.forEach((item) => {
+//   tableChains.put(Math.random(), item);
+// });
+// tableChains.showTable();
 
 
-let tableRandom = new HashTableRandom();
-data.forEach((item) => {
-  tableRandom.put(Math.random(), item);
-});
-tableRandom.showTable();
+// let tableRandom = new HashTableRandom();
+// data.forEach((item) => {
+//   tableRandom.put(Math.random(), item);
+// });
+// tableRandom.showTable();
 
 // Задание №3
 /* Расставить на стандартной 64-клеточной шахматной доске 8 ферзей так, чтобы ни
