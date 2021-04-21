@@ -175,39 +175,54 @@ function binarySearch(value, list) {
 /* Фиббоначиев поиск */
 function fibMonaccianSearch(x, arr) {
   let n = arr.length;
-  let fibMMm2 = 0; 
+  let fibMMm2 = 0;
   let fibMMm1 = 1;
-  let fibM = fibMMm2 + fibMMm1; 
+  let fibM = fibMMm2 + fibMMm1;
 
   while (fibM < n) {
     fibMMm2 = fibMMm1;
     fibMMm1 = fibM;
     fibM = fibMMm2 + fibMMm1;
-  }
 
-  let offset = -1;
-
-  while (fibM > 1) {
-    let i = Math.min(offset + fibMMm2, n - 1);
-
-    if (arr[i] < x) {
-      fibM = fibMMm1;
-      fibMMm1 = fibMMm2;
-      fibMMm2 = fibM - fibMMm1;
-      offset = i;
-    } else if (arr[i] > x) {
-      fibM = fibMMm2;
-      fibMMm1 = fibMMm1 - fibMMm2;
-      fibMMm2 = fibM - fibMMm1;
-    } else return i;
-  }
-
-
-  if (fibMMm1 && arr[n - 1] == x) {
-    return n - 1;
+    if (arr[fibM] < x) {
+      continue;
+    } else if (arr[fibM] > x) {
+      arr = arr.slice(0, fibMMm1 - 1);
+      fibMMm2 = 0;
+      fibMMm1 = 1;
+      fibM = fibMMm2 + fibMMm1;
+      n = arr.length;
+    } else if (arr[fibM] == x) {
+      return fibM;
+    } else {
+      return -1;
+    }
   }
 
   return -1;
+
+  // let offset = -1;
+
+  // while (fibM > 1) {
+  //   let i = Math.min(offset + fibMMm2, n - 1);
+
+  //   if (arr[i] < x) {
+  //     fibM = fibMMm1;
+  //     fibMMm1 = fibMMm2;
+  //     fibMMm2 = fibM - fibMMm1;
+  //     offset = i;
+  //   } else if (arr[i] > x) {
+  //     fibM = fibMMm2;
+  //     fibMMm1 = fibMMm1 - fibMMm2;
+  //     fibMMm2 = fibM - fibMMm1;
+  //   } else return i;
+  // }
+
+  // if (fibMMm1 && arr[n - 1] == x) {
+  //   return n - 1;
+  // }
+
+  // return -1;
 }
 
 /* Интерполяционный поиск */
@@ -409,7 +424,7 @@ class HashTableRandom extends HashTableLinearP {
   }
 
   hash(string) {
-    let total  = (string + ((625 * string + 6571) % 31104)) % this.table.length;
+    let total = (string + ((625 * string + 6571) % 31104)) % this.table.length;
 
     if (total < 1) {
       this.table.length - 1;
@@ -430,7 +445,6 @@ table.showTable();
 //   tableChains.put(Math.random(), item);
 // });
 // tableChains.showTable();
-
 
 // let tableRandom = new HashTableRandom();
 // data.forEach((item) => {
