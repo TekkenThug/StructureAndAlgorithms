@@ -14,6 +14,10 @@ class Stack
         return count($this->stack);
     }
 
+    public function peek() {
+        return $this->stack[0];
+    }
+
     public function push($item) {
         // проверяем, не полон ли наш стек
 //        if (count($this->stack) < $this->limit) {

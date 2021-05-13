@@ -11,6 +11,10 @@ class Deque
         $this->deque = array();
     }
 
+    public function len() {
+        return count($this->deque);
+    }
+
     public function pushStart($item)
     {
         // Добавление в начало дека
