@@ -8,7 +8,6 @@ $stack = new Stack();
 
 balanceRoundedBrackets($text);
 
-
 function balanceRoundedBrackets($text)
 {
     global $stack;
