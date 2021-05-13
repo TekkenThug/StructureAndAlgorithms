@@ -10,6 +10,10 @@ class Stack
         $this->stack = array();
     }
 
+    public function len() {
+        return count($this->stack);
+    }
+
     public function push($item) {
         // проверяем, не полон ли наш стек
 //        if (count($this->stack) < $this->limit) {
@@ -32,5 +36,22 @@ class Stack
 
     public function isEmpty() {
         return empty($this->stack);
+    }
+
+    public function typingInTXT($path, $newLine = true) {
+        $formattedText = '';
+        $length = count($this->stack);
+
+        for ($i = 0; $i < $length; $i++) {
+            if ($newLine)
+                $formattedText .= $this->pop() . "\n";
+
+            else
+                $formattedText .= $this->pop();
+        }
+
+        $fp = fopen($path, "w");
+        fwrite($fp, $formattedText);
+        fclose($fp);
     }
 }
