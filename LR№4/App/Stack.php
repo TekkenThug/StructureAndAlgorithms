@@ -4,23 +4,20 @@
 class Stack
 {
     protected $stack;
-    protected $limit;
 
-    public function __construct($limit = 10) {
+    public function __construct() {
         // инициализация стека
         $this->stack = array();
-        // устанавливаем ограничение на количество элементов в стеке
-        $this->limit = $limit;
     }
 
     public function push($item) {
         // проверяем, не полон ли наш стек
-        if (count($this->stack) < $this->limit) {
+//        if (count($this->stack) < $this->limit) {
             // добавляем новый элемент в начало массива
             array_unshift($this->stack, $item);
-        } else {
-            throw new RunTimeException('Стек переполнен!');
-        }
+//        } else {
+//            throw new RunTimeException('Стек переполнен!');
+//        }
     }
 
     public function pop() {

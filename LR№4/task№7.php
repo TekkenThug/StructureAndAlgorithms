@@ -5,8 +5,6 @@ require_once 'App/Deque.php';
 $text = explode("\n", file_get_contents('./public/task№7.txt'));
 $length = count($text);
 
-$positiveCounter = 0;
-
 $deque = new Deque();
 
 for ($i = 0; $i < $length; $i++) {
@@ -41,9 +39,9 @@ for ($i = 0; $i < $length; $i++) {
     }
 }
 
-echo "<pre>";
-echo print_r($deque);
-echo "</pre>";
+//echo "<pre>";
+//echo print_r($deque);
+//echo "</pre>";
 
 $deque->typingInTXT("public/task№7-answer.txt");
 
