@@ -100,3 +100,56 @@ searching();
 то есть можно ли из него за конечное число шагов перейти к правильному.
 Если это возможно, то необходимо найти хотя бы одно решение - последовательность движений,
 после которой числа будут расположены в правильном порядке. */
+/**
+ * @param {number[][]} board
+ * @return {number}
+ */
+var slidingPuzzle = function(board) {
+    // BOARD to STRING
+    const serializePuzzle = (board) => {
+        let str = '';
+        board.forEach(row=>{
+            row.forEach(s=>{
+                str += s;
+            })
+        })
+        return str;
+    }
+
+    const target = "123450";
+    if (serializePuzzle(board) === target) return 0;
+    const swaps = [[1, 3], [0, 2, 4], [1, 5], [0, 4], [1, 3, 5], [2, 4]];
+    let toVisit = [serializePuzzle(board)];
+    let visited = new Set();
+    let result = 0;
+
+    while (toVisit.length){
+        // LEVEL TRAVEL
+        let levelSize=toVisit.length;
+        for (let i=0; i<levelSize; i++){
+            let encodedBoard = toVisit.shift();
+            let pos0 = encodedBoard.indexOf("0");
+            visited.add(encodedBoard);
+
+            for (let pos of swaps[pos0]){
+                // SWAP
+                let temp = encodedBoard[pos];
+                let newBoard = encodedBoard.slice().split("");
+                newBoard[pos] = "0";
+                newBoard[pos0] = temp;
+                newBoard = newBoard.join("")
+
+                // CONCLUDE
+                if (!visited.has(newBoard)){
+                    if (newBoard === target) return result+1;
+                    toVisit.push(newBoard);
+                }
+            }
+        }
+        result++;
+    }
+
+    return -1;
+};
+
+slidingPuzzle([[15, 2, 1, 12],[8, 5, 6, 11], [4, 9, 10, 7], [3, 14, 13]])
