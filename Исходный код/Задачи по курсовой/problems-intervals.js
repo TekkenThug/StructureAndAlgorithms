@@ -1,6 +1,13 @@
+// Задача №1
+/*
+Дан массив отрезков intervals, в котором intervals[i] =[starti,endi],
+некоторые отрезки могут пересекаться. Напишите функцию, которая объединяет
+все пересекающиеся отрезки в один и возвращает новый массив непересекающихся отрезков.
+ */
+
 const sumIntervals = (intervals) => {
     /* Сортировка */
-    intervals.sort( (a, b) => {
+    intervals.sort((a, b) => {
         return a[0] - b[0]
     })
 
@@ -26,5 +33,5 @@ const sumIntervals = (intervals) => {
     console.log(intervals)
 }
 
-sumIntervals([[8,10], [1,3], [15,18],[2,6]])
-sumIntervals([[4,5], [1,4]])
+sumIntervals([[8, 10], [1, 3], [15, 18], [2, 6]])
+sumIntervals([[4, 5], [1, 4]])
