@@ -20,7 +20,7 @@ const coins = (piles) => {
     let yourCoins = 0;
 
     for (let i = n / 3; i < n; i += 2) {
-        console.log(`Массив: ${piles}, Элемент: ${piles[i]}`);
+        // console.log(`Массив: ${piles}, Элемент: ${piles[i]}`);
         yourCoins += piles[i];
     }
 
